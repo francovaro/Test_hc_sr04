@@ -30,12 +30,12 @@ void HC_SR04_Init(void)
  */
 void HC_SR04_StartInterrupt(void)
 {
-
+	TIM_Cmd(TIM2, ENABLE);
 }
 
 void HC_SR04_StopInterrupt(void)
 {
-
+	TIM_Cmd(TIM2, DISABLE);
 }
 
 void HC_SR04_PollRead(void)
@@ -105,6 +105,8 @@ void HC_SR04_Init_Timer(void)
 	TIM_OCInitStruct.TIM_Pulse = 15; //us
 	TIM_OCInitStruct.TIM_OCPolarity = TIM_OCPolarity_High;
 	TIM_OC3Init(TIM2, &TIM_OCInitStruct);
+
+	TIM_CtrlPWMOutputs(TIM2, ENABLE);
 
 
 	/* set TIM2 channel 1 for input compare on RISING edge */

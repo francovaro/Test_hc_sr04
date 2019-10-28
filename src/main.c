@@ -24,6 +24,7 @@ int main(void)
 	/* main while */
 
 	setSysTick(100);
+	HC_SR04_StartInterrupt();
 
 	while(1)
 	{
