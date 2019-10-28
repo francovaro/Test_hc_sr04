@@ -12,6 +12,11 @@ static uint32_t timeRead;
 static void HC_SR04_Init_Pin(void);
 static void HC_SR04_Init_Timer(void);
 
+/* ------------------------------- Public function implementation -------------------------------*/
+
+/**
+ *
+ */
 void HC_SR04_Init(void)
 {
 	timeRead = 0;
@@ -20,6 +25,9 @@ void HC_SR04_Init(void)
 	HC_SR04_Init_Timer();
 }
 
+/**
+ *
+ */
 void HC_SR04_StartInterrupt(void)
 {
 
@@ -61,6 +69,8 @@ void HC_SR04_Init_Pin(void)
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(HC_ECHO_PORT, &GPIO_InitStructure);
 }
+
+/* ------------------------------- Private function implementation -------------------------------*/
 
 /**
  *
@@ -134,7 +144,9 @@ void HC_SR04_Init_Timer(void)
 	NVIC_Init(&NVIC_InitStructure);
 }
 
-
+/**
+ *
+ */
 void TIM2_IRQHandler(void)
 {
 	static uint32_t startVal = 0;
@@ -154,12 +166,18 @@ void TIM2_IRQHandler(void)
 		TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);	/* maybe not neede */
 		/*vCCxIF can be cleared by software by writing it to 0 or by reading the captured data stored in the
 		TIMx_CCRx register. */
+
+		timeRead = endValue - startVal;
 		hcsr04_signalDone = SET;
 	}
 }
 
+/**
+ *
+ */
 uint32_t HC_SR04_GetVal(void)
 {
-	hcsr04_signalDone = 0;
-	return hcsr04_signalDone;
+	uint32_t toReturn = timeRead;
+	timeRead = 0;
+	return toReturn;
 }
