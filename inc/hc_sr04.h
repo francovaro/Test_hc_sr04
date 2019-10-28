@@ -8,12 +8,12 @@
 #ifndef HC_SR04_H_
 #define HC_SR04_H_
 
-#define HC_TRIGGER_PIN		GPIO_Pin_11
-#define HC_TRIGGER_PORT		GPIOA
-#define HC_TRIGGER_CLOCK	RCC_AHB1Periph_GPIOA
+#define HC_TRIGGER_PIN		GPIO_Pin_10
+#define HC_TRIGGER_PORT		GPIOB
+#define HC_TRIGGER_CLOCK	RCC_AHB1Periph_GPIOB
 
-#define HC_ECHO_PIN			GPIO_Pin_12
-#define HC_ECHO_PIN_SRC		GPIO_Pin_12
+#define HC_ECHO_PIN			GPIO_Pin_0
+#define HC_ECHO_PIN_SRC		GPIO_Pin_0
 #define HC_ECHO_PORT		GPIOA
 #define HC_ECHO_CLOCK		RCC_AHB1Periph_GPIOA
 

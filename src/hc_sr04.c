@@ -106,7 +106,9 @@ void HC_SR04_Init_Timer(void)
 	TIM_OCInitStruct.TIM_OCPolarity = TIM_OCPolarity_High;
 	TIM_OC3Init(TIM2, &TIM_OCInitStruct);
 
-	TIM_CtrlPWMOutputs(TIM2, ENABLE);
+
+
+	// TIM_CtrlPWMOutputs(TIM2, ENABLE);
 
 
 	/* set TIM2 channel 1 for input compare on RISING edge */
