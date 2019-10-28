@@ -4,21 +4,27 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../src/hc_sr04.c \
 ../src/main.c \
 ../src/syscalls.c \
 ../src/system_stm32f4xx.c \
+../src/systick.c \
 ../src/uart.c 
 
 OBJS += \
+./src/hc_sr04.o \
 ./src/main.o \
 ./src/syscalls.o \
 ./src/system_stm32f4xx.o \
+./src/systick.o \
 ./src/uart.o 
 
 C_DEPS += \
+./src/hc_sr04.d \
 ./src/main.d \
 ./src/syscalls.d \
 ./src/system_stm32f4xx.d \
+./src/systick.d \
 ./src/uart.d 
 
 
