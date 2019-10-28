@@ -13,10 +13,12 @@
 
 #include "uart.h"
 #include "systick.h"
+#include "hc_sr04.h"
 			
 
 int main(void)
 {
+	uint32_t readVal;
 	/* peripheral setup */
 	UART_fv_config(0);
 	/* main while */
@@ -25,6 +27,10 @@ int main(void)
 
 	while(1)
 	{
-
+		if (hcsr04_signalDone == SET)
+		{
+			readVal = HC_SR04_GetVal();
+			hcsr04_signalDone = RESET;
+		}
 	}
 }

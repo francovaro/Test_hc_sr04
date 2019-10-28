@@ -7,11 +7,15 @@
 #include "stm32f4xx.h"
 #include "hc_sr04.h"
 
+static uint32_t timeRead;
+
 static void HC_SR04_Init_Pin(void);
 static void HC_SR04_Init_Timer(void);
 
 void HC_SR04_Init(void)
 {
+	timeRead = 0;
+	hcsr04_signalDone = RESET;
 	HC_SR04_Init_Pin();
 	HC_SR04_Init_Timer();
 }
@@ -150,5 +154,12 @@ void TIM2_IRQHandler(void)
 		TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);	/* maybe not neede */
 		/*vCCxIF can be cleared by software by writing it to 0 or by reading the captured data stored in the
 		TIMx_CCRx register. */
+		hcsr04_signalDone = SET;
 	}
+}
+
+uint32_t HC_SR04_GetVal(void)
+{
+	hcsr04_signalDone = 0;
+	return hcsr04_signalDone;
 }
