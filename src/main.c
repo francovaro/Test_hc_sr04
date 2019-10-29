@@ -21,17 +21,25 @@ int main(void)
 	uint32_t readVal;
 	/* peripheral setup */
 	UART_fv_config(0);
-	/* main while */
+
+	/* Init timer */
+	HC_SR04_Init();
 
 	setSysTick(100);
 	HC_SR04_StartInterrupt();
 
+	/* main while */
 	while(1)
 	{
 		if (hcsr04_signalDone == SET)
 		{
 			readVal = HC_SR04_GetVal();
 			hcsr04_signalDone = RESET;
+		}
+
+		if (interruptSys == SET)
+		{
+			interruptSys = RESET;
 		}
 	}
 }

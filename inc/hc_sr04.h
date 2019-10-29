@@ -9,11 +9,12 @@
 #define HC_SR04_H_
 
 #define HC_TRIGGER_PIN		GPIO_Pin_10
+#define HC_TRIGGER_PIN_SRC	GPIO_PinSource10
 #define HC_TRIGGER_PORT		GPIOB
 #define HC_TRIGGER_CLOCK	RCC_AHB1Periph_GPIOB
 
 #define HC_ECHO_PIN			GPIO_Pin_0
-#define HC_ECHO_PIN_SRC		GPIO_Pin_0
+#define HC_ECHO_PIN_SRC		GPIO_PinSource0
 #define HC_ECHO_PORT		GPIOA
 #define HC_ECHO_CLOCK		RCC_AHB1Periph_GPIOA
 

@@ -30,6 +30,8 @@ void HC_SR04_Init(void)
  */
 void HC_SR04_StartInterrupt(void)
 {
+	//TIM_CCxCmd(TIM2, TIM_Channel_1, ENABLE);
+	TIM_ARRPreloadConfig(TIM2, ENABLE);
 	TIM_Cmd(TIM2, ENABLE);
 }
 
@@ -53,21 +55,23 @@ void HC_SR04_Init_Pin(void)
 
 	RCC_AHB1PeriphClockCmd(HC_TRIGGER_CLOCK | HC_ECHO_CLOCK, ENABLE);
 
-	GPIO_InitStructure.GPIO_Pin = HC_ECHO_PIN;
+	GPIO_InitStructure.GPIO_Pin = HC_TRIGGER_PIN;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Fast_Speed;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
 	GPIO_Init(HC_TRIGGER_PORT, &GPIO_InitStructure);
 
-	GPIO_PinAFConfig(HC_ECHO_PORT, HC_ECHO_PIN_SRC, GPIO_AF_TIM2);
+	GPIO_PinAFConfig(HC_TRIGGER_PORT, HC_TRIGGER_PIN_SRC, GPIO_AF_TIM2);
 
 	GPIO_InitStructure.GPIO_Pin = HC_ECHO_PIN;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Fast_Speed;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(HC_ECHO_PORT, &GPIO_InitStructure);
+
+	GPIO_PinAFConfig(HC_ECHO_PORT, HC_ECHO_PIN_SRC, GPIO_AF_TIM2);
 }
 
 /* ------------------------------- Private function implementation -------------------------------*/
@@ -106,8 +110,9 @@ void HC_SR04_Init_Timer(void)
 	TIM_OCInitStruct.TIM_OCPolarity = TIM_OCPolarity_High;
 	TIM_OC3Init(TIM2, &TIM_OCInitStruct);
 
+	TIM_OC3PreloadConfig(TIM2, TIM_OCPreload_Enable);
 
-
+	//TIM_SelectOCxM(TIM2, TIM_Channel_3, TIM_OCMode_Timing);
 	// TIM_CtrlPWMOutputs(TIM2, ENABLE);
 
 
