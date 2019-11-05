@@ -18,6 +18,7 @@
 
 int main(void)
 {
+	float distance;
 	uint32_t readVal;
 	/* peripheral setup */
 	UART_fv_config(0);
@@ -33,7 +34,9 @@ int main(void)
 	{
 		if (hcsr04_signalDone == SET)
 		{
-			readVal = HC_SR04_GetVal();
+			/*readVal = HC_SR04_GetVal();
+			distance = readVal*165/1000;*/
+			distance = HC_SR04_GetVal()*165/1000;
 			hcsr04_signalDone = RESET;
 		}
 

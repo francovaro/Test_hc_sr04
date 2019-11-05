@@ -190,7 +190,7 @@ void TIM5_IRQHandler(void)
 		/*vCCxIF can be cleared by software by writing it to 0 or by reading the captured data stored in the
 		TIMx_CCRx register. */
 
-		timeRead = endValue - startVal;
+		timeRead = startVal - endValue;
 		hcsr04_signalDone = SET;
 	}
 }
