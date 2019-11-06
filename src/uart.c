@@ -21,6 +21,8 @@ void UART_fv_config(uint8_t irqEnabled)
 	usart_nrOfByte = 0;
 
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+
 	GPIO_StructInit(&GPIO_InitStruct);
 	USART_StructInit(&USART_InitStructure);
 
