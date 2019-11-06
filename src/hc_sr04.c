@@ -93,7 +93,7 @@ void HC_SR04_Init_Timer(void)
 	NVIC_InitTypeDef NVIC_InitStructure;
 
 	RCC_GetClocksFreq(&RCC_ClocksStatus);
-	uint16_t prescaler = RCC_ClocksStatus.SYSCLK_Frequency / 1000000 - 1; //1 tick = 1us (1 tick = 0.165mm resolution)
+	uint16_t prescaler = RCC_ClocksStatus.HCLK_Frequency / 1000000 - 1; //1 tick = 1us (1 tick = 0.165mm resolution)
 
 
 	/* -------------------------- TIM 2 setting -------------------------- */
@@ -190,7 +190,7 @@ void TIM5_IRQHandler(void)
 		/*vCCxIF can be cleared by software by writing it to 0 or by reading the captured data stored in the
 		TIMx_CCRx register. */
 
-		timeRead = startVal - endValue;
+ 		timeRead = /*startVal -*/ endValue;
 		hcsr04_signalDone = SET;
 	}
 }
