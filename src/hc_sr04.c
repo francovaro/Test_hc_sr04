@@ -93,8 +93,12 @@ void HC_SR04_Init_Timer(void)
 	NVIC_InitTypeDef NVIC_InitStructure;
 
 	RCC_GetClocksFreq(&RCC_ClocksStatus);
-	uint16_t prescaler = RCC_ClocksStatus.HCLK_Frequency / 1000000 - 1; //1 tick = 1us (1 tick = 0.165mm resolution)
+	uint16_t prescaler = ((RCC_ClocksStatus.HCLK_Frequency/2)) / 1000000 - 1; //1 tick = 1us (1 tick = 0.165mm resolution)
 
+	/*
+	 * not sure about the calc of the prescaler
+	 * shouldn t be HCLK/2 ?
+	 * */
 
 	/* -------------------------- TIM 2 setting -------------------------- */
 	/* TIM 2 is used as output compare
