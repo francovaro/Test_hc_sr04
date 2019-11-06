@@ -20,7 +20,6 @@ static void _converti(uint16_t dato,char str[]);
 
 int main(void)
 {
-	float 		distance;
 	uint32_t 	readVal;
 	uint8_t 	stringa[15];
 	/* peripheral setup */
@@ -39,10 +38,7 @@ int main(void)
 	{
 		if (hcsr04_signalDone == SET)
 		{
-			//readVal = HC_SR04_GetVal();
-			//distance = readVal*165/1000;
-			readVal = HC_SR04_GetVal()*165/1000;
-			//readVal = distance;
+			readVal = HC_SR04_GetVal()*0.17;
 			hcsr04_signalDone = RESET;
 		}
 

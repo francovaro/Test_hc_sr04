@@ -174,10 +174,12 @@ void TIM5_IRQHandler(void)
 	static uint32_t startVal = 0;
 	static uint32_t endValue = 0;
 
+
+	/* is not used */
 	if (TIM_GetITStatus(TIM5, TIM_IT_CC1))
 	{
-		startVal = TIM_GetCapture1(TIM5);	/* to read channel 1 ?*/
-		endValue = startVal;				/* so in case of error.. 0! */
+		startVal = TIM_GetCapture1(TIM5);	/* to read channel 1 - USELESS ?*/
+		endValue = 0;						/* so in case of error.. 0! */
 		TIM_ClearITPendingBit(TIM5, TIM_IT_CC1);	/* maybe not neede */
 		/*vCCxIF can be cleared by software by writing it to 0 or by reading the captured data stored in the
 		TIMx_CCRx register. */
