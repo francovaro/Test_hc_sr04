@@ -19,8 +19,6 @@
 #include "hc_sr04.h"
 			
 
-static void _converti(uint16_t dato,char str[]);
-
 int main(void)
 {
 	uint32_t 	readVal;
@@ -52,35 +50,4 @@ int main(void)
 			interruptSys = RESET;
 		}
 	}
-}
-
-void _converti(uint16_t dato, char str[])
-{
-	unsigned char iniziato=0,quoz=0,index=0;
-	unsigned int base,rest;
-
-	for (base=1000;base;base/=10)
-	{
-		quoz=dato/base;
-		rest=dato%base;
-		if(!iniziato)
-		{
-			if(quoz)
-			{
-				str[index++]=quoz + '0';
-				iniziato=1;
-			}
-		}
-		else
-		{
-			str[index++]=quoz + '0';
-		}
-		dato=rest;
-	}
-	if(!iniziato)
-	{
-		str[index++]=quoz + '0';
-	}
-
-	str[index]=0;
 }
