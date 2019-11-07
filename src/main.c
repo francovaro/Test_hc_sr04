@@ -11,6 +11,8 @@
 
 #include "stm32f4xx.h"
 #include <string.h>
+#include <stdio.h>
+#include <stdint.h>
 
 #include "uart.h"
 #include "systick.h"
@@ -22,7 +24,7 @@ static void _converti(uint16_t dato,char str[]);
 int main(void)
 {
 	uint32_t 	readVal;
-	uint8_t 	stringa[15];
+	char 		stringa[15];
 	/* peripheral setup */
 	UART_fv_config(0);
 
@@ -45,7 +47,7 @@ int main(void)
 
 		if (interruptSys == SET)
 		{
-			snprintf(stringa, sizeof(stringa), "%d\n", readVal);
+			snprintf(stringa, sizeof(stringa), "%lu\n", readVal);
 			UART_fv_SendData(stringa, strlen(stringa));
 			interruptSys = RESET;
 		}
