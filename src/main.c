@@ -10,6 +10,7 @@
 
 
 #include "stm32f4xx.h"
+#include <string.h>
 
 #include "uart.h"
 #include "systick.h"
