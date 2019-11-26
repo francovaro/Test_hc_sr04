@@ -28,5 +28,6 @@ void SysTick_Handler(void)
 	if(counter > SYSTICK_LIMIT)
 	{
 		interruptSys = SET;
+		counter = 0;
 	}
 }
