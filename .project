@@ -3,6 +3,7 @@
 	<name>Test_hc_sr04</name>
 	<comment></comment>
 	<projects>
+		<project>lib_uart</project>
 		<project>nucleo-f446re_stdperiph_lib</project>
 	</projects>
 	<buildSpec>

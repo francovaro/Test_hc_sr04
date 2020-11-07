@@ -8,13 +8,14 @@
   ******************************************************************************
 */
 
+#include "lib_uart.h"
 
 #include "stm32f4xx.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdint.h>
 
-#include "uart.h"
+
 #include "systick.h"
 #include "hc_sr04.h"
 			
@@ -24,15 +25,14 @@ int main(void)
 	uint32_t 	readVal;
 	char 		stringa[15];
 	/* peripheral setup */
-	UART_fv_config(0);
+	UART_lib_config(e_UART_2, DISABLE, 0, 0);
 
 	/* Init timer */
 	HC_SR04_Init();
 
-	setSysTick(100);
 	HC_SR04_StartInterrupt();
 
-	UART_fv_SendData("START\n", strlen("START\n"));
+	UART_lib_sendData("START\n", strlen("START\n"));
 
 	/* main while */
 	while(1)
@@ -46,7 +46,7 @@ int main(void)
 		if (interruptSys == SET)
 		{
 			snprintf(stringa, sizeof(stringa), "%lu\n", readVal);
-			UART_fv_SendData(stringa, strlen(stringa));
+			UART_lib_sendData(stringa, strlen(stringa));
 			interruptSys = RESET;
 		}
 	}

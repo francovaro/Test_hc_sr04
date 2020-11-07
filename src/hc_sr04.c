@@ -31,7 +31,7 @@ void HC_SR04_Init(void)
 void HC_SR04_StartInterrupt(void)
 {
 	//TIM_CCxCmd(TIM2, TIM_Channel_1, ENABLE);
-	TIM_ARRPreloadConfig(TIM2, ENABLE);	/* set ARPE Auto Pre Load */
+	//TIM_ARRPreloadConfig(TIM2, ENABLE);	/* set ARPE Auto Pre Load */
 	TIM_Cmd(TIM2, ENABLE);				/* set CEN - Counter enable bit */
 	TIM_Cmd(TIM5, ENABLE);				/* set CEN - Counter enable bit */
 }
@@ -93,11 +93,13 @@ void HC_SR04_Init_Timer(void)
 	NVIC_InitTypeDef NVIC_InitStructure;
 
 	RCC_GetClocksFreq(&RCC_ClocksStatus);
-	uint16_t prescaler = ((RCC_ClocksStatus.HCLK_Frequency/2)) / 1000000 - 1; //1 tick = 1us (1 tick = 0.165mm resolution)
+	uint16_t prescaler = (((RCC_ClocksStatus.PCLK1_Frequency)) / 1000000) - 1; //1 tick = 1us (1 tick = 0.165mm resolution)
 
 	/*
 	 * not sure about the calc of the prescaler
 	 * shouldn t be HCLK/2 ?
+	 * tick freq = timer freq / (prescaler + 1)
+	 * tick freq =( 84Mhz/ 84Mhz) / 1000000
 	 * */
 
 	/* -------------------------- TIM 2 setting -------------------------- */
@@ -110,7 +112,7 @@ void HC_SR04_Init_Timer(void)
 
 	TIM_TimeBaseInitStruct.TIM_Prescaler = prescaler;
 	TIM_TimeBaseInitStruct.TIM_CounterMode = TIM_CounterMode_Up;
-	TIM_TimeBaseInitStruct.TIM_Period = 0xFFFF;						/* period ? */
+	TIM_TimeBaseInitStruct.TIM_Period = 1000;						/* period 1000 * 1us = 1ms */
 	TIM_TimeBaseInitStruct.TIM_ClockDivision = TIM_CKD_DIV1;
 	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseInitStruct);	/* TIM 2 */
 	TIM_TimeBaseInit(TIM5, &TIM_TimeBaseInitStruct);	/* TIM 5 */
@@ -119,8 +121,9 @@ void HC_SR04_Init_Timer(void)
 	TIM_OCStructInit(&TIM_OCInitStruct);
 	TIM_OCInitStruct.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStruct.TIM_OutputState = TIM_OutputState_Enable;
-	TIM_OCInitStruct.TIM_Pulse = 15; //us
-	TIM_OCInitStruct.TIM_OCPolarity = TIM_OCPolarity_High;
+	TIM_OCInitStruct.TIM_Pulse = 10; //us
+	//TIM_OCInitStruct.TIM_OCPolarity = TIM_OCPolarity_High;
+	TIM_OCInitStruct.TIM_OCPolarity = TIM_OCPolarity_Low;	/* go low on match*/
 	TIM_OC3Init(TIM2, &TIM_OCInitStruct);
 
 	TIM_OC3PreloadConfig(TIM2, TIM_OCPreload_Enable);	/* write CCMR2 */
@@ -187,6 +190,7 @@ void TIM5_IRQHandler(void)
 		TIM_ClearITPendingBit(TIM5, TIM_IT_CC1);	/* maybe not neede */
 		/*vCCxIF can be cleared by software by writing it to 0 or by reading the captured data stored in the
 		TIMx_CCRx register. */
+		(void)startVal;
 	}
 
 	if (TIM_GetITStatus(TIM5, TIM_IT_CC2))
