@@ -55,10 +55,10 @@ void HC_SR04_Init_Pin(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);	/* clock to TIM 2 */
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);	/* clock to TIM 5 */
 
-	RCC_AHB1PeriphClockCmd(HC_TRIGGER_CLOCK | HC_ECHO_CLOCK, ENABLE);
+	RCC_AHB1PeriphClockCmd(HC_TRIGGER_CLOCK | HC_ECHO_CLOCK, ENABLE);	/* clock to GPIO */
 
 	GPIO_InitStructure.GPIO_Pin = HC_TRIGGER_PIN;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Fast_Speed;
@@ -106,7 +106,7 @@ void HC_SR04_Init_Timer(void)
 	/* TIM 2 is used as output compare
 	 * to generate the desired pulse of 10 us
 	 */
-	TIM_DeInit(TIM2);
+	//TIM_DeInit(TIM2);
 
 	TIM_TimeBaseStructInit(&TIM_TimeBaseInitStruct);
 
@@ -133,7 +133,7 @@ void HC_SR04_Init_Timer(void)
 	/* TIM 5 is used as input compare
 	 * to read the incoming pulse
 	 */
-	TIM_DeInit(TIM5);
+	//TIM_DeInit(TIM5);
 
 
 	/* set TIM5 channel 1 for input compare on RISING edge */

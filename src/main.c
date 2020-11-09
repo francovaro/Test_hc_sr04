@@ -29,8 +29,10 @@ int main(void)
 
 	/* Init timer */
 	HC_SR04_Init();
-
 	HC_SR04_StartInterrupt();
+
+	/* set systick */
+	setSysTick(1000);
 
 	UART_lib_sendData("START\n", strlen("START\n"));
 
