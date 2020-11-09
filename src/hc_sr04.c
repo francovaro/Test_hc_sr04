@@ -93,7 +93,7 @@ void HC_SR04_Init_Timer(void)
 	NVIC_InitTypeDef NVIC_InitStructure;
 
 	RCC_GetClocksFreq(&RCC_ClocksStatus);
-	uint16_t prescaler = (((RCC_ClocksStatus.PCLK1_Frequency)) / 1000000) - 1; //1 tick = 1us (1 tick = 0.165mm resolution)
+	uint16_t prescaler = (((RCC_ClocksStatus.PCLK1_Frequency*2)) / 1000000) - 1; //1 tick = 1us (1 tick = 0.165mm resolution)
 
 	/*
 	 * not sure about the calc of the prescaler
@@ -122,8 +122,8 @@ void HC_SR04_Init_Timer(void)
 	TIM_OCInitStruct.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStruct.TIM_OutputState = TIM_OutputState_Enable;
 	TIM_OCInitStruct.TIM_Pulse = 10; //us
-	//TIM_OCInitStruct.TIM_OCPolarity = TIM_OCPolarity_High;
-	TIM_OCInitStruct.TIM_OCPolarity = TIM_OCPolarity_Low;	/* go low on match*/
+	TIM_OCInitStruct.TIM_OCPolarity = TIM_OCPolarity_High;
+	//TIM_OCInitStruct.TIM_OCPolarity = TIM_OCPolarity_Low;	/* go low on match*/
 	TIM_OC3Init(TIM2, &TIM_OCInitStruct);
 
 	TIM_OC3PreloadConfig(TIM2, TIM_OCPreload_Enable);	/* write CCMR2 */
