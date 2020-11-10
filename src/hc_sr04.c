@@ -7,6 +7,8 @@
 #include "stm32f4xx.h"
 #include "hc_sr04.h"
 
+#define	ECHO_TIM_PERIOD		(60000u)
+
 static uint32_t timeRead;
 
 static void HC_SR04_Init_Pin(void);
@@ -106,13 +108,11 @@ void HC_SR04_Init_Timer(void)
 	/* TIM 2 is used as output compare
 	 * to generate the desired pulse of 10 us
 	 */
-	//TIM_DeInit(TIM2);
-
 	TIM_TimeBaseStructInit(&TIM_TimeBaseInitStruct);
 
 	TIM_TimeBaseInitStruct.TIM_Prescaler = prescaler;
 	TIM_TimeBaseInitStruct.TIM_CounterMode = TIM_CounterMode_Up;
-	TIM_TimeBaseInitStruct.TIM_Period = 1000;						/* period 1000 * 1us = 1ms */
+	TIM_TimeBaseInitStruct.TIM_Period = ECHO_TIM_PERIOD;						/* period 1000 * 1us = 1ms */
 	TIM_TimeBaseInitStruct.TIM_ClockDivision = TIM_CKD_DIV1;
 	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseInitStruct);	/* TIM 2 */
 	TIM_TimeBaseInit(TIM5, &TIM_TimeBaseInitStruct);	/* TIM 5 */
@@ -133,8 +133,6 @@ void HC_SR04_Init_Timer(void)
 	/* TIM 5 is used as input compare
 	 * to read the incoming pulse
 	 */
-	//TIM_DeInit(TIM5);
-
 
 	/* set TIM5 channel 1 for input compare on RISING edge */
 	TIM_ICStructInit(&TIM_ICInitStruct);
@@ -154,16 +152,13 @@ void HC_SR04_Init_Timer(void)
 	TIM_ICInitStruct.TIM_ICFilter = 0;
 	TIM_ICInit(TIM5, &TIM_ICInitStruct);
 
-	//TIM_PWMIConfig(TIM5, &TIM_ICInitStruct);
-
 	/* select the  */
-	TIM_SelectInputTrigger(TIM5 , TIM_TS_TI1FP1);		/* set the input */
-	TIM_SelectSlaveMode(TIM5 , TIM_SlaveMode_Reset);
-	TIM_SelectMasterSlaveMode(TIM5 , TIM_MasterSlaveMode_Enable);
+	TIM_SelectInputTrigger(TIM5, TIM_TS_TI1FP1);		/* set the input */
+	TIM_SelectSlaveMode(TIM5, TIM_SlaveMode_Reset);
+	TIM_SelectMasterSlaveMode(TIM5, TIM_MasterSlaveMode_Enable);
 
 	TIM_ITConfig(TIM5, TIM_IT_CC1, ENABLE);
 	TIM_ITConfig(TIM5, TIM_IT_CC2, ENABLE);
-
 
 	// No StructInit call in API
 	NVIC_InitStructure.NVIC_IRQChannel = TIM5_IRQn;
@@ -200,7 +195,15 @@ void TIM5_IRQHandler(void)
 		/*vCCxIF can be cleared by software by writing it to 0 or by reading the captured data stored in the
 		TIMx_CCRx register. */
 
- 		timeRead = /*startVal -*/ endValue;
+		if (startVal > endValue)
+		{
+			timeRead = endValue - (ECHO_TIM_PERIOD - startVal);
+		}
+		else
+		{
+			timeRead = endValue - startVal;
+		}
+
 		hcsr04_signalDone = SET;
 	}
 }

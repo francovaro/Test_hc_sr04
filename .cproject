@@ -60,6 +60,7 @@
 									<listOptionValue builtIn="false" value="lib_uart"/>
 									<listOptionValue builtIn="false" value="nucleo-f446re_stdperiph_lib"/>
 								</option>
+								<option id="gnu.c.link.option.ldflags.850445313" superClass="gnu.c.link.option.ldflags" useByScannerDiscovery="false" value="-u _printf_float" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.390695234" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
