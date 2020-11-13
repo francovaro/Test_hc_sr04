@@ -32,8 +32,6 @@ void HC_SR04_Init(void)
  */
 void HC_SR04_StartInterrupt(void)
 {
-	//TIM_CCxCmd(TIM2, TIM_Channel_1, ENABLE);
-	//TIM_ARRPreloadConfig(TIM2, ENABLE);	/* set ARPE Auto Pre Load */
 	TIM_Cmd(TIM2, ENABLE);				/* set CEN - Counter enable bit */
 	TIM_Cmd(TIM5, ENABLE);				/* set CEN - Counter enable bit */
 }
@@ -98,8 +96,6 @@ void HC_SR04_Init_Timer(void)
 	uint16_t prescaler = (((RCC_ClocksStatus.PCLK1_Frequency*2)) / 1000000) - 1; //1 tick = 1us (1 tick = 0.165mm resolution)
 
 	/*
-	 * not sure about the calc of the prescaler
-	 * shouldn t be HCLK/2 ?
 	 * tick freq = timer freq / (prescaler + 1)
 	 * tick freq =( 84Mhz/ 84Mhz) / 1000000
 	 * */
@@ -152,7 +148,7 @@ void HC_SR04_Init_Timer(void)
 	TIM_ICInitStruct.TIM_ICFilter = 0;
 	TIM_ICInit(TIM5, &TIM_ICInitStruct);
 
-	/* select the  */
+	/* select the  input and slave mode */
 	TIM_SelectInputTrigger(TIM5, TIM_TS_TI1FP1);		/* set the input */
 	TIM_SelectSlaveMode(TIM5, TIM_SlaveMode_Reset);
 	TIM_SelectMasterSlaveMode(TIM5, TIM_MasterSlaveMode_Enable);
@@ -160,7 +156,7 @@ void HC_SR04_Init_Timer(void)
 	TIM_ITConfig(TIM5, TIM_IT_CC1, ENABLE);
 	TIM_ITConfig(TIM5, TIM_IT_CC2, ENABLE);
 
-	// No StructInit call in API
+	/* interrupt */
 	NVIC_InitStructure.NVIC_IRQChannel = TIM5_IRQn;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
